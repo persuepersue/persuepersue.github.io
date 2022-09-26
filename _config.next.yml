@@ -595,7 +595,7 @@ disqus:
 # DisqusJS
 # For more information: https://disqusjs.skk.moe
 disqusjs:
-  enable: true
+  enable: false
   # API Endpoint of Disqus API (https://disqus.com/api/docs/).
   # Leave api empty if you are able to connect to Disqus API. Otherwise you need a reverse proxy for it.
   # For example:
