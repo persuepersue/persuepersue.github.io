@@ -17,7 +17,7 @@ hash -r
 node --version
 ```
 
-
+<!-- more -->
 
 # 安装 hexo
 
