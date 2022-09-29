@@ -5,6 +5,9 @@ on:
     branches:
       - main  # default branch
 
+env:
+  BING_TOKEN: ${{ secrets.BING_TOKEN }}
+
 jobs:
   pages:
     runs-on: ubuntu-latest
