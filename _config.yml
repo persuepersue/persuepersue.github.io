@@ -99,11 +99,6 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: next
 
-# Deployment
-## Docs: https://hexo.io/docs/one-command-deployment
-deploy:
-- type: cjh_bing_url_submitter
-
 hexo_submit_urls_to_search_engine:
   submit_condition: count #链接被提交的条件，可选值：count | period 现仅支持count
   count: 1 # 提交最新的10个链接
@@ -122,3 +117,8 @@ hexo_submit_urls_to_search_engine:
   replace: 0  # 是否替换链接中的部分字符串，可选值：1 | 0（0：否；1：是）
 # find_what: http://cjh0613.github.io/blog
 # replace_with: https://cjh0613.com
+
+deploy:
+- type: cjh_google_url_submitter
+- type: cjh_bing_url_submitter
+- type: cjh_baidu_url_submitter
