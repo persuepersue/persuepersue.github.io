@@ -98,3 +98,7 @@ ignore:
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: next
+
+# 自动生成sitemap
+sitemap:
+  path: sitemap.xml
