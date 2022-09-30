@@ -102,7 +102,7 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+- type: cjh_bing_url_submitter
 
 hexo_submit_urls_to_search_engine:
   submit_condition: count #链接被提交的条件，可选值：count | period 现仅支持count
