@@ -41,4 +41,5 @@ jobs:
       - name: Biying urls submit
         run: |
           urls=`awk '/^https:\/\/ohlinux.com/{T=$0;}{print "\""T"\","}' baidu_urls.txt | tr '\n' ' '`
-          curl -X POST "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlBatch?apikey=${{ secrets.BIYING_API }}" -H "Content-Type: application/json" -H "charset: utf-8" -d '{"siteUrl":"https://ohlinux.com", "urlList":['${urls}']}'
+          date='{"siteUrl":"https://ohlinux.com", "urlList":['${urls}']}'
+          curl -X POST "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlBatch?apikey=${{ secrets.BIYING_API }}" -H "Content-Type: application/json" -H "charset: utf-8" -d "${data}"
