@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://aolinux.ml/2-6-11%E7%89%88%E6%9C%AC%E5%9F%BA%E6%95%B0%E6%A0%91%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</loc>
+    <loc>https://ohlinux.com/2-6-11%E7%89%88%E6%9C%AC%E5%9F%BA%E6%95%B0%E6%A0%91%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</loc>
     
     <lastmod>2022-10-15</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>https://aolinux.ml/about/index.html</loc>
+    <loc>https://ohlinux.com/about/index.html</loc>
     
     <lastmod>2022-10-15</lastmod>
     
@@ -20,7 +20,7 @@
   </url>
   
   <url>
-    <loc>https://aolinux.ml/categories/index.html</loc>
+    <loc>https://ohlinux.com/categories/index.html</loc>
     
     <lastmod>2022-10-15</lastmod>
     
@@ -29,7 +29,7 @@
   </url>
   
   <url>
-    <loc>https://aolinux.ml/%E6%90%AD%E5%BB%BA-hexo-%E5%8D%9A%E5%AE%A2/</loc>
+    <loc>https://ohlinux.com/%E6%90%AD%E5%BB%BA-hexo-%E5%8D%9A%E5%AE%A2/</loc>
     
     <lastmod>2022-09-26</lastmod>
     
@@ -39,7 +39,7 @@
   
 
   <url>
-    <loc>https://aolinux.ml/</loc>
+    <loc>https://ohlinux.com/</loc>
     <lastmod>2022-10-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -47,21 +47,21 @@
 
   
   <url>
-    <loc>https://aolinux.ml/tags/kernel-2-6-11/</loc>
+    <loc>https://ohlinux.com/tags/kernel-2-6-11/</loc>
     <lastmod>2022-10-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://aolinux.ml/tags/%E5%9F%BA%E6%95%B0%E6%A0%91/</loc>
+    <loc>https://ohlinux.com/tags/%E5%9F%BA%E6%95%B0%E6%A0%91/</loc>
     <lastmod>2022-10-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://aolinux.ml/tags/radix-tree/</loc>
+    <loc>https://ohlinux.com/tags/radix-tree/</loc>
     <lastmod>2022-10-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -70,14 +70,14 @@
 
   
   <url>
-    <loc>https://aolinux.ml/categories/kernel-2-6-11/</loc>
+    <loc>https://ohlinux.com/categories/kernel-2-6-11/</loc>
     <lastmod>2022-10-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://aolinux.ml/categories/kernel-2-6-11/%E5%9F%BA%E6%95%B0%E6%A0%91/</loc>
+    <loc>https://ohlinux.com/categories/kernel-2-6-11/%E5%9F%BA%E6%95%B0%E6%A0%91/</loc>
     <lastmod>2022-10-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
