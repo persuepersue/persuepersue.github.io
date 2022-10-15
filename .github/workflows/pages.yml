@@ -32,7 +32,9 @@ jobs:
           publish_dir: ./public
           cname: ohlinux.com
       - name: Checkout to gh-pages
-        uses: actions/checkout@gh-pages
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
       - name: Baidu urls submit
         run: |
           curl -H 'Content-Type:text/plain' --data-binary @urls.txt "http://data.zz.baidu.com/urls?site=https://ohlinux.com&token=${{ secrets.BAIDU_TOKEN }}"
