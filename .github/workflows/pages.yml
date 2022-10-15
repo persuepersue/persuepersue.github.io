@@ -37,4 +37,4 @@ jobs:
           ref: gh-pages
       - name: Baidu urls submit
         run: |
-          curl -H 'Content-Type:text/plain' --data-binary @urls.txt "http://data.zz.baidu.com/urls?site=https://ohlinux.com&token=${{ secrets.BAIDU_TOKEN }}"
+          curl -H 'Content-Type:text/plain' --data-binary @baidu_urls.txt "http://data.zz.baidu.com/urls?site=https://ohlinux.com&token=${{ secrets.BAIDU_TOKEN }}"
