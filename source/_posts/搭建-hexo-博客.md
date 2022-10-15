@@ -1,5 +1,6 @@
 ---
 title: 搭建 hexo 博客
+updated: 2022-09-27
 ---
 
 环境：ubuntu 20.04
