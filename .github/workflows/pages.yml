@@ -31,7 +31,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
           cname: ohlinux.com
-      - name: Baidu urls submit
+      - name: Checkout to gh-pages
         uses: actions/checkout@gh-pages
+      - name: Baidu urls submit
         run: |
           curl -H 'Content-Type:text/plain' --data-binary @urls.txt "http://data.zz.baidu.com/urls?site=https://ohlinux.com&token=${{ secrets.BAIDU_TOKEN }}"
