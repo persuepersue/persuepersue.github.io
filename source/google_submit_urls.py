@@ -9,7 +9,7 @@ def index(url):
     ENDPOINT = "https://indexing.googleapis.com/v3/urlNotifications:publish"
 
     # service_account_file.json is the private key that you created for your service account.
-    JSON_KEY_FILE = "ohlinux-blog-1938443474e5.json"
+    JSON_KEY_FILE = "google_api_secret.json"
 
     credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_KEY_FILE, scopes=SCOPES)
 
