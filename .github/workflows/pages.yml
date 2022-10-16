@@ -25,6 +25,22 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
+      - name: Google urls submit
+        run: |
+          pwd
+          la -al
+          cd source
+          git clone https://${{ secrets.PRIVATE_REPO_CLONE_TOKEN }}@github.com/persuepersue/google-indexing-api-secret.git temp_google_indexing_api
+          cp ./temp_google_indexing_api/ohlinux-blog-1938443474e5.json .
+          pip3 install -r requirements.txt
+          python3 google_submit_urls.py
+          rm -rf temp_google_indexing_api
+          git config user.name persuepersue
+          git config user.email persuepersue@users.noreply.github.com
+          git status
+          git add sent.txt
+          git commit -m "update sent.txt"
+          git push
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -44,17 +60,3 @@ jobs:
           urls=`awk '/^https:\/\/ohlinux.com/{T=$0;}{print "\""T"\","}' urls.txt | tr '\n' ' '`
           data='{"siteUrl":"https://ohlinux.com", "urlList":['${urls}']}'
           curl -X POST "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlBatch?apikey=${{ secrets.BIYING_API }}" -H "Content-Type: application/json" -H "charset: utf-8" -d "${data}"
-      - name: Google urls submit
-        run: |
-          pwd
-          git clone https://${{ secrets.PRIVATE_REPO_CLONE_TOKEN }}@github.com/persuepersue/google-indexing-api-secret.git temp_google_indexing_api
-          cp ./temp_google_indexing_api/ohlinux-blog-1938443474e5.json .
-          pip3 install -r requirements.txt
-          python3 google_submit_urls.py
-          rm -rf temp_google_indexing_api
-          git config user.name persuepersue
-          git config user.email persuepersue@users.noreply.github.com
-          git status
-          git add sent.txt
-          git commit -m "update sent.txt"
-          git push
