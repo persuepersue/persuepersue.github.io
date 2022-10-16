@@ -28,7 +28,7 @@ jobs:
       - name: Google urls submit
         run: |
           pwd
-          la -al
+          ls -al
           cd source
           git clone https://${{ secrets.PRIVATE_REPO_CLONE_TOKEN }}@github.com/persuepersue/google-indexing-api-secret.git temp_google_indexing_api
           cp ./temp_google_indexing_api/ohlinux-blog-1938443474e5.json .
