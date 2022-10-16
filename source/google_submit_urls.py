@@ -26,7 +26,7 @@ def index(url):
 
 all_link = []
 sitemap=''
-with open("public/sitemap.xml",mode='r',encoding='utf-8') as fo:
+with open("../public/sitemap.xml",mode='r',encoding='utf-8') as fo:
     sitemap = fo.read()
 print(sitemap)
 bs = BeautifulSoup(sitemap, 'html.parser') #解析网页
