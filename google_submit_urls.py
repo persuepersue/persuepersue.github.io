@@ -25,10 +25,11 @@ def index(url):
     return response
 
 all_link = []
-origin_rul = 'https://ohlinux.com/sitemap.xml'
-r = req.get(origin_rul)
-print(r.content)
-bs = BeautifulSoup(r.content, 'html.parser') #解析网页
+sitemap=''
+with open("sitemap.xml",mode='r',encoding='utf-8') as fo:
+    sitemap = fo.readlines()
+print(sitemap)
+bs = BeautifulSoup(sitemap, 'html.parser') #解析网页
 hyperlink = bs.find_all(name = 'loc')  # 标签是否要附加信息，如要附加。去BeautifulSoup查看文档，我目前测试过attrs={'alt' : ''}
 for h in hyperlink:
     hh = h.string
