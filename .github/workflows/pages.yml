@@ -37,12 +37,6 @@ jobs:
           python3 google_submit_urls.py
           rm -rf temp_google_indexing_api
           rm -rf google_api_secret.json
-          git config user.name persuepersue
-          git config user.email persuepersue@users.noreply.github.com
-          git status
-          git add sent.txt
-          git commit --allow-empty -m "update sent.txt"
-          git push
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:

@@ -3,6 +3,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import httplib2
 import requests as req
 from bs4 import BeautifulSoup
+import os
 
 def index(url):
     SCOPES = [ "https://www.googleapis.com/auth/indexing" ]
@@ -38,6 +39,7 @@ for h in hyperlink:
 all_link.reverse()
 
 sent = []
+need_to_update = False
 
 # 打开文件
 try:
@@ -59,9 +61,18 @@ for link in all_link:
             with open("sent.txt", 'a+') as f:
                 f.write(str(link) + '\n')  # 加\n换行显示
                 print("%s send successful" %(link))
+                need_to_update = True
         else:
             print(res)
             break
     else:
         print(str(link) + '已经发送过了')
         continue
+
+if need_to_update:
+    os.system('git config user.name persuepersue')
+    os.system('git config user.email persuepersue@users.noreply.github.com')
+    os.system('git status')
+    os.system('git add sent.txt')
+    os.system('git commit --allow-empty -m "update sent.txt"')
+    os.system('git push')
