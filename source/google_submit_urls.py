@@ -27,7 +27,7 @@ def index(url):
 all_link = []
 sitemap=''
 with open("sitemap.xml",mode='r',encoding='utf-8') as fo:
-    sitemap = fo.readlines()
+    sitemap = fo.read()
 print(sitemap)
 bs = BeautifulSoup(sitemap, 'html.parser') #解析网页
 hyperlink = bs.find_all(name = 'loc')  # 标签是否要附加信息，如要附加。去BeautifulSoup查看文档，我目前测试过attrs={'alt' : ''}
