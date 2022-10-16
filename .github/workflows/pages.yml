@@ -43,3 +43,8 @@ jobs:
           urls=`awk '/^https:\/\/ohlinux.com/{T=$0;}{print "\""T"\","}' urls.txt | tr '\n' ' '`
           data='{"siteUrl":"https://ohlinux.com", "urlList":['${urls}']}'
           curl -X POST "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlBatch?apikey=${{ secrets.BIYING_API }}" -H "Content-Type: application/json" -H "charset: utf-8" -d "${data}"
+      - name: Google urls submit
+        run: |
+          git clone https://persuepersue:${Token}@github.com/persuepersue/google-indexing-api-secret.git temp_google_indexing_api
+          cp ./temp_google_indexing_api/ohlinux-blog-1938443474e5.json .
+          python3 google_submit_urls.py
