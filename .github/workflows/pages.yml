@@ -32,11 +32,11 @@ jobs:
           ls -al public source
           cd source
           git clone https://${{ secrets.PRIVATE_REPO_CLONE_TOKEN }}@github.com/persuepersue/google-indexing-api-secret.git temp_google_indexing_api
-          cp ./temp_google_indexing_api/ohlinux-blog-1938443474e5.json .
+          cp ./temp_google_indexing_api/google_api_secret.json .
           pip3 install -r requirements.txt
           python3 google_submit_urls.py
           rm -rf temp_google_indexing_api
-          rm -rf ohlinux-blog-1938443474e5.json
+          rm -rf google_api_secret.json
           git config user.name persuepersue
           git config user.email persuepersue@users.noreply.github.com
           git status
