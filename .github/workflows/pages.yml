@@ -30,18 +30,18 @@ jobs:
           pwd
           ls -al
           ls -al public source
-          cd source
+          cd public
           git clone https://${{ secrets.PRIVATE_REPO_CLONE_TOKEN }}@github.com/persuepersue/google-indexing-api-secret.git temp_google_indexing_api
           cp ./temp_google_indexing_api/ohlinux-blog-1938443474e5.json .
           pip3 install -r requirements.txt
           python3 google_submit_urls.py
           rm -rf temp_google_indexing_api
-          git config user.name persuepersue
-          git config user.email persuepersue@users.noreply.github.com
-          git status
-          git add sent.txt
-          git commit -m "update sent.txt"
-          git push
+          #git config user.name persuepersue
+          #git config user.email persuepersue@users.noreply.github.com
+          #git status
+          #git add sent.txt
+          #git commit -m "update sent.txt"
+          #git push
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
