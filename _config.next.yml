@@ -387,7 +387,7 @@ back2top:
 
 # Reading progress bar
 reading_progress:
-  enable: true
+  enable: false
   # Available values: left | right
   start_at: left
   # Available values: top | bottom
