@@ -12,4 +12,4 @@ Disallow: /js/
 Disallow: /css/
 Disallow: /lib/
 
-Sitemap: https://aolinux.ml/sitemap.xml
+Sitemap: https://ohlinux.com/sitemap.xml
