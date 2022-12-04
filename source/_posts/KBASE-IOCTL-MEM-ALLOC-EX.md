@@ -34,6 +34,8 @@ static long kbase_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 
 `KBASE_HANDLE_IOCTL_INOUT` 表示 `KBASE_IOCTL_MEM_ALLOC_EX` 是有输入并且有输出的 cmd，输入输出都是 `uarg`。在 `KBASE_HANDLE_IOCTL_INOUT` 中先将 `uarg` 通过 `copy_from_user(&param, uarg, sizeof(param));` 拷贝到一个临时变量 `union kbase_ioctl_mem_alloc_ex param` 中，然后调用 `ret = kbase_api_mem_alloc_ex(kctx, param);`，再调用 `copy_to_user(uarg, &param, sizeof(param));` 将 `param` 拷贝到 `uarg` 中，最终返回 `ret`（如果在两处 copy 中出错，则返回 `-EFAULT`）。
 
+<!-- more -->
+
 以上是 `KBASE_IOCTL_MEM_ALLOC_EX`  的粗略流程，具体内容在 `kbase_api_mem_alloc_ex` 函数中，接下来详解这个函数。
 
 # union kbase_ioctl_mem_alloc_ex
