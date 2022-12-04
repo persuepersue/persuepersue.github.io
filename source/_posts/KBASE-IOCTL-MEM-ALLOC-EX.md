@@ -164,12 +164,8 @@ static int kbase_tracking_page_setup(struct kbase_context *kctx, struct vm_area_
 
 这个函数的调用流程如下：
 
-```mermaid
-graph
+{% mermaid graph %}
 A("mmap=>operation: mmap 时调用 .mmap 钩子 kbase_mmap(filp, vma);") -->B("kbase_context_mmap(kctx, vma);")
     B --> C{根据 vm_pgoff 的值来做不同的操作}
     C -->|"vma->vm_pgoff == PFN_DOWN(BASE_MEM_MAP_TRACKING_HANDLE)"| D["kbase_tracking_page_setup(kctx, vma);"]
-```
-
-
-
+{% endmermaid %}
