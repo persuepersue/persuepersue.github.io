@@ -11,5 +11,6 @@ Allow: /others/
 Disallow: /js/
 Disallow: /css/
 Disallow: /lib/
+Disallow: /cdn-cgi/
 
 Sitemap: https://ohlinux.com/sitemap.xml
