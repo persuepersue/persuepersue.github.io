@@ -56,7 +56,7 @@ Hexo config file
 
 ```yaml
 # Site
-author: 林芝驰
+author: qeandzc
 ```
 
 ### 配置网站描述
@@ -65,7 +65,7 @@ Hexo config file
 
 ```yaml
 # Site
-description: '林芝驰的个人小站'
+description: 'qeandzc的个人小站'
 ```
 
 ### 使能 Next 主题
@@ -86,10 +86,6 @@ hexo server
 ```
 
 访问 http://localhost:4000/
-
-上面配置的信息：
-
-![image-20220925163856353](https://raw.githubusercontent.com/persuez/pictures/master/2022/09/upgit_20220925_1664095137.png)
 
 
 
