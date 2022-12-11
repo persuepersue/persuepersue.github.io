@@ -1702,7 +1702,7 @@ pre code {
 }
 @media (max-width: 991px) {
   .post-body {
-    text-align: justify;
+    text-align: match-parent;
   }
 }
 .post-body h1 .header-anchor,
