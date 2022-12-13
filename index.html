@@ -124,17 +124,17 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -151,6 +151,109 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://ohlinux.com/KBASE-IOCTL-MEM-ALLOC-EX/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="qeandzc">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qeandzc的个人小站">
+      <meta itemprop="description" content="qeandzc的个人小站 -- linux kernel">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | qeandzc的个人小站">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/KBASE-IOCTL-MEM-ALLOC-EX/" class="post-title-link" itemprop="url">KBASE_IOCTL -- MEM_ALLOC_EX 解析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-04 15:06:30" itemprop="dateCreated datePublished" datetime="2022-12-04T15:06:30+08:00">2022-12-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/mali-gpu-kernel-driver/" itemprop="url" rel="index"><span itemprop="name">mali gpu kernel driver</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/KBASE-IOCTL-MEM-ALLOC-EX/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="KBASE-IOCTL-MEM-ALLOC-EX/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>源码来源：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://armkeil.blob.core.windows.net/developer/Files/downloads/mali-drivers/kernel/mali-valhall-gpu/VX504X08X-SW-99002-r41p0-01eac0.tar">https://armkeil.blob.core.windows.net/developer/Files/downloads/mali-drivers/kernel/mali-valhall-gpu/VX504X08X-SW-99002-r41p0-01eac0.tar</a></p>
+<p>这篇文章详解 <code>kbase_ioctl</code> 中的 <code>KBASE_IOCTL_MEM_ALLOC_EX</code> 命令。最新的 mali GPU 支持了 CSF，因此这篇的讲解基于 <code>MALI_USE_CSF</code> 使能的配置。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">long</span> <span class="title function_">kbase_ioctl</span><span class="params">(<span class="keyword">struct</span> file *filp, <span class="type">unsigned</span> <span class="type">int</span> cmd, <span class="type">unsigned</span> <span class="type">long</span> arg)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">void</span> __user *uarg = (<span class="type">void</span> __user *)arg;</span><br><span class="line">    ...;</span><br><span class="line">    <span class="keyword">switch</span> (cmd) &#123;</span><br><span class="line"><span class="meta">#<span class="keyword">if</span> MALI_USE_CSF</span></span><br><span class="line">    <span class="keyword">case</span> KBASE_IOCTL_MEM_ALLOC_EX:</span><br><span class="line">    		KBASE_HANDLE_IOCTL_INOUT(KBASE_IOCTL_MEM_ALLOC_EX, kbase_api_mem_alloc_ex,</span><br><span class="line">                                     <span class="keyword">union</span> kbase_ioctl_mem_alloc_ex, kctx);</span><br><span class="line">    		<span class="keyword">break</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">     ...;</span><br><span class="line">    &#125;</span><br><span class="line">    ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>KBASE_HANDLE_IOCTL_INOUT</code> 表示 <code>KBASE_IOCTL_MEM_ALLOC_EX</code> 是有输入并且有输出的 cmd，输入输出都是 <code>uarg</code>。在 <code>KBASE_HANDLE_IOCTL_INOUT</code> 中先将 <code>uarg</code> 通过 <code>copy_from_user(&amp;param, uarg, sizeof(param));</code> 拷贝到一个临时变量 <code>union kbase_ioctl_mem_alloc_ex param</code> 中，然后调用 <code>ret = kbase_api_mem_alloc_ex(kctx, param);</code>，再调用 <code>copy_to_user(uarg, &amp;param, sizeof(param));</code> 将 <code>param</code> 拷贝到 <code>uarg</code> 中，最终返回 <code>ret</code>（如果在两处 copy 中出错，则返回 <code>-EFAULT</code>）。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/KBASE-IOCTL-MEM-ALLOC-EX/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
