@@ -2,15 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://ohlinux.com/404.html</loc>
-    
-    <lastmod>2022-12-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://ohlinux.com/categories/index.html</loc>
     
     <lastmod>2022-12-13</lastmod>
@@ -20,9 +11,9 @@
   </url>
   
   <url>
-    <loc>https://ohlinux.com/KBASE-IOCTL-MEM-ALLOC-EX/</loc>
+    <loc>https://ohlinux.com/404.html</loc>
     
-    <lastmod>2022-12-04</lastmod>
+    <lastmod>2022-12-13</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -95,27 +86,6 @@
   </url>
   
   <url>
-    <loc>https://ohlinux.com/tags/mali-valhall-gpu/</loc>
-    <lastmod>2022-12-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ohlinux.com/tags/arm64/</loc>
-    <lastmod>2022-12-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ohlinux.com/tags/gpu/</loc>
-    <lastmod>2022-12-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ohlinux.com/tags/kernel-debug/</loc>
     <lastmod>2022-12-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -133,13 +103,6 @@
   
   <url>
     <loc>https://ohlinux.com/categories/kernel-2-6-11/</loc>
-    <lastmod>2022-12-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ohlinux.com/categories/mali-gpu-kernel-driver/</loc>
     <lastmod>2022-12-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
