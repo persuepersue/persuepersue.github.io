@@ -446,7 +446,7 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>文章深入源码解析了 2.6.11 版本的基数树实现。</p>
-<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">init/main.c</span><br><span class="line"></span><br><span class="line">asmlinkage <span class="type">void</span> __init <span class="title function_">start_kernel</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    ...;</span><br><span class="line">    radix_tree_init();</span><br><span class="line">    ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">init/main.c</span><br><span class="line"></span><br><span class="line">asmlinkage <span class="type">void</span> __init <span class="title function_">start_kernel</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    ...;</span><br><span class="line">    radix_tree_init();</span><br><span class="line">    ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2-6-11%E7%89%88%E6%9C%AC%E5%9F%BA%E6%95%B0%E6%A0%91%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/#more" rel="contents">
@@ -538,7 +538,7 @@
     <div class="post-body" itemprop="articleBody">
           <p>环境：ubuntu 20.04</p>
 <p>参考：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/zh-cn/docs/">https://hexo.io/zh-cn/docs/</a> <a target="_blank" rel="noopener external nofollow noreferrer" href="https://theme-next.js.org/docs/getting-started/#Enabling-NexT">https://theme-next.js.org/docs/getting-started/#Enabling-NexT</a></p>
-<h1 id="升级-nodejs"><a href="#升级-nodejs" class="headerlink" title="升级 nodejs"></a>升级 nodejs</h1><p>不然可能会遇到奇奇怪怪的问题</p>
+<h2 id="升级-nodejs"><a href="#升级-nodejs" class="headerlink" title="升级 nodejs"></a>升级 nodejs</h2><p>不然可能会遇到奇奇怪怪的问题</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install n -g</span><br><span class="line">sudo n stable</span><br><span class="line"><span class="built_in">hash</span> -r</span><br><span class="line">node --version</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
