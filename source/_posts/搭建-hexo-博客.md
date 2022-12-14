@@ -8,7 +8,7 @@ updated: 2022-09-27
 
 参考：https://hexo.io/zh-cn/docs/ https://theme-next.js.org/docs/getting-started/#Enabling-NexT
 
-# 升级 nodejs
+## 升级 nodejs
 
 不然可能会遇到奇奇怪怪的问题
 
@@ -21,7 +21,7 @@ node --version
 
 <!-- more -->
 
-# 安装 hexo
+## 安装 hexo
 
 ```sh
 sudo npm install -g hexo-cli
@@ -29,7 +29,7 @@ sudo npm install -g hexo-cli
 
 
 
-# 建站
+## 建站
 
 ```sh
 mkdir blog
@@ -38,9 +38,7 @@ cd blog
 npm install	
 ```
 
-
-
-## 安装 Next 主题
+### 安装 Next 主题
 
 ```sh
 cd blog
@@ -50,7 +48,7 @@ npm install hexo-theme-next@latest // 更新
 
 有两个配置文件：根目录下的 `_config.yml` 和 `node_modules/hexo-theme-next/_config.yml`，前者为 hexo 的配置文件，后者为 Next 的配置文件。
 
-### 配置网站作者
+#### 配置网站作者
 
 Hexo config file
 
@@ -59,7 +57,7 @@ Hexo config file
 author: qeandzc
 ```
 
-### 配置网站描述
+#### 配置网站描述
 
 Hexo config file
 
@@ -68,7 +66,7 @@ Hexo config file
 description: 'qeandzc的个人小站'
 ```
 
-### 使能 Next 主题
+#### 使能 Next 主题
 
 Hexo config file
 
@@ -89,7 +87,7 @@ hexo server
 
 
 
-### 配置 Next
+#### 配置 Next
 
 如果要修改 Next 的配置文件，不要直接修改 `node_modules/hexo-theme-next/_config.yml`，Next 升级可能会覆盖掉配置或者有冲突导致升级不成功。参考：https://theme-next.js.org/docs/getting-started/configuration.html
 
@@ -100,13 +98,13 @@ cp node_modules/hexo-theme-next/_config.yml _config.next.yml
 
 
 
-## 部署
+### 部署
 
-### 创建 persuepersue.github.io 仓库
+#### 创建 persuepersue.github.io 仓库
 
 
 
-### 生成 ssh key
+#### 生成 ssh key
 
 ```sh
 ssh-keygen -t rsa -C "persuepersue/persuepersue.github.io"
@@ -131,7 +129,7 @@ host persuepersue_github.com
 
 
 
-### 配置 github
+#### 配置 github
 
 参考
 
@@ -167,7 +165,7 @@ git push -u origin main
 
 
 
-### 部署
+#### 部署
 
 ```sh
 cd blog
@@ -218,13 +216,13 @@ git push -u origin main
 
 
 
-### 访问
+#### 访问
 
 https://persuepersue.github.io/
 
 
 
-# 写文章
+## 写文章
 
 参考：https://hexo.io/zh-tw/docs/writing
 

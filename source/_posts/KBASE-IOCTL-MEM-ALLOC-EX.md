@@ -38,7 +38,7 @@ static long kbase_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 
 以上是 `KBASE_IOCTL_MEM_ALLOC_EX`  的粗略流程，具体内容在 `kbase_api_mem_alloc_ex` 函数中，接下来详解这个函数。
 
-# union kbase_ioctl_mem_alloc_ex
+## union kbase_ioctl_mem_alloc_ex
 
 上面说到 `KBASE_IOCTL_MEM_ALLOC_EX` 用户态传进来的参数和内核返回用户的数据都是 `union kbase_ioctl_mem_alloc_ex` 类型表示的，那么首先来看下这个类型：
 
@@ -88,7 +88,7 @@ union kbase_ioctl_mem_alloc_ex {
 
 
 
-# kbase_mem_allow_alloc
+## kbase_mem_allow_alloc
 
 由于 mali 的 user space 驱动是闭源的，所以我也只能靠猜测 mali 驱动是如何使用的。
 

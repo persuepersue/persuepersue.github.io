@@ -13,7 +13,7 @@ categories:
 
 <!-- more -->
 
-# 0x00 例子：
+## 0x00 例子：
 
 假设有个死机问题，通过初步分析发现是因为有个 page 带了 PG_mlocked 标志，正好遇到处理这个页面的内核路径不允许带有 PG_mlocked 标志的页面，所以就死机了。那到底为什么这个 page 会带有 PG_mlocked 标志呢？我们直接从代码层面翻来覆去地查看，**都没有找到 PG_mlocked 从哪里来的**。这个时候 page_owner 这个利器就派上用场了，我们在 `page-flags.h` 文件中重新实现了 SetPageMlocked 和 TestSetPageMlocked，在这两个函数实现中调用 `__set_page_owner` 函数，如 `__set_page_owner(page, 0, 0x1);`。因为在内核模块中可能会调用 SetPageMlocked 和 TestSetPageMlocked，所以还需要在 `mm/page_owner.c`中 `EXPORT_SYMBOL(__set_page_owner);`。并且在死机时 `dump_page(page, "page set mlocker");`。这样在死机 dump 中就可以看到这个 page 被设置 PG_mlock 的路径了。
 
@@ -21,7 +21,7 @@ categories:
 
 
 
-# 0x01 如何开启 page_owner
+## 0x01 如何开启 page_owner
 
 ```sh
 CONFIG_PAGE_OWNER=y
