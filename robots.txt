@@ -13,4 +13,4 @@ Disallow: /css/
 Disallow: /lib/
 Disallow: /cdn-cgi/
 
-Sitemap: https://www.ohlinux.com/sitemap.xml
+Sitemap: https://ohlinux.com/sitemap.xml
