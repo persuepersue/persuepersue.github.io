@@ -42,7 +42,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          cname: www.ohlinux.com
+          cname: ohlinux.com
           exclude_assets: '.github,sent.txt'
       - name: Checkout to gh-pages
         uses: actions/checkout@v3
