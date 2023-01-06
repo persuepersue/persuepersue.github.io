@@ -24,7 +24,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="搭建 hexo 博客">
 <meta property="og:url" content="https://ohlinux.com/%E6%90%AD%E5%BB%BA-hexo-%E5%8D%9A%E5%AE%A2/index.html">
-<meta property="og:site_name" content="qeandzc的个人小站">
+<meta property="og:site_name" content="奇变偶不变">
 <meta property="og:description" content="环境：ubuntu 20.04 参考：https:&#x2F;&#x2F;hexo.io&#x2F;zh-cn&#x2F;docs&#x2F; https:&#x2F;&#x2F;theme-next.js.org&#x2F;docs&#x2F;getting-started&#x2F;#Enabling-NexT 升级 nodejs不然可能会遇到奇奇怪怪的问题 1234sudo npm install n -gsudo n stablehash -rnode --version">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-26T16:00:00.000Z">
@@ -41,7 +41,7 @@
 <script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://ohlinux.com/%E6%90%AD%E5%BB%BA-hexo-%E5%8D%9A%E5%AE%A2/","path":"搭建-hexo-博客/","title":"搭建 hexo 博客"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>搭建 hexo 博客 | qeandzc的个人小站</title>
+<title>搭建 hexo 博客 | 奇变偶不变</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9JTD6JE3GJ"></script>
   <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-9JTD6JE3GJ","only_pageview":false}</script>
@@ -91,7 +91,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">qeandzc的个人小站</p>
+      <p class="site-title">奇变偶不变</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -194,12 +194,12 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qeandzc的个人小站">
+      <meta itemprop="name" content="奇变偶不变">
       <meta itemprop="description" content="qeandzc的个人小站 -- linux kernel">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="搭建 hexo 博客 | qeandzc的个人小站">
+      <meta itemprop="name" content="搭建 hexo 博客 | 奇变偶不变">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -286,7 +286,7 @@
 <p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/zh-tw/docs/github-pages.html">https://hexo.io/zh-tw/docs/github-pages.html</a> （zh-tw 的版本比简体中文的新）</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">cd</span> <span class="string">blog</span></span><br><span class="line"><span class="string">git</span> <span class="string">init</span></span><br><span class="line"><span class="string">vim</span> <span class="string">.git/config</span></span><br><span class="line">[<span class="string">core</span>]</span><br><span class="line">	<span class="string">repositoryformatversion</span> <span class="string">=</span> <span class="number">0</span></span><br><span class="line">	<span class="string">filemode</span> <span class="string">=</span> <span class="literal">true</span></span><br><span class="line">	<span class="string">bare</span> <span class="string">=</span> <span class="literal">false</span></span><br><span class="line">	<span class="string">logallrefupdates</span> <span class="string">=</span> <span class="literal">true</span></span><br><span class="line">[<span class="string">remote</span> <span class="string">&quot;origin&quot;</span>]</span><br><span class="line">	<span class="string">url</span> <span class="string">=</span> <span class="string">git@persuepersue_github.com:persuepersue/persuepersue.github.io.git</span></span><br><span class="line">	<span class="string">fetch</span> <span class="string">=</span> <span class="string">+refs/heads/*:refs/remotes/origin/*</span></span><br><span class="line">[<span class="string">branch</span> <span class="string">&quot;main&quot;</span>]</span><br><span class="line">	<span class="string">remote</span> <span class="string">=</span> <span class="string">origin</span></span><br><span class="line">	<span class="string">merge</span> <span class="string">=</span> <span class="string">refs/heads/main</span></span><br><span class="line"></span><br><span class="line"><span class="string">git</span> <span class="string">add</span> <span class="string">.</span></span><br><span class="line"><span class="string">git</span> <span class="string">commit</span> <span class="string">-m</span> <span class="string">&quot;hexo init&quot;</span></span><br><span class="line"><span class="string">git</span> <span class="string">branch</span> <span class="string">-M</span> <span class="string">main</span></span><br><span class="line"><span class="string">git</span> <span class="string">push</span> <span class="string">-u</span> <span class="string">origin</span> <span class="string">main</span></span><br></pre></td></tr></table></figure>
 
-<p>这里的 url 如果电脑只访问一个 github 账号，可以直接 <a href="mailto:&#x67;&#105;&#x74;&#64;&#103;&#x69;&#x74;&#104;&#x75;&#98;&#x2e;&#x63;&#111;&#x6d;" rel="external nofollow noreferrer">&#x67;&#105;&#x74;&#64;&#103;&#x69;&#x74;&#104;&#x75;&#98;&#x2e;&#x63;&#111;&#x6d;</a>:persuepersue&#x2F;persuepersue.github.io.git。但是如果有多个 github 账号，那就需要像上面一样。</p>
+<p>这里的 url 如果电脑只访问一个 github 账号，可以直接 <a href="mailto:&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;" rel="external nofollow noreferrer">&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;</a>:persuepersue&#x2F;persuepersue.github.io.git。但是如果有多个 github 账号，那就需要像上面一样。</p>
 <h4 id="部署-1"><a href="#部署-1" class="headerlink" title="部署"></a>部署</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line"><span class="built_in">mkdir</span> .github/workflows/</span><br><span class="line">vim .github/workflows/pages.yml</span><br><span class="line">name: Pages</span><br><span class="line"></span><br><span class="line">on:</span><br><span class="line">  push:</span><br><span class="line">    branches:</span><br><span class="line">      - main  <span class="comment"># default branch</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">jobs</span>:</span><br><span class="line">  pages:</span><br><span class="line">    runs-on: ubuntu-latest</span><br><span class="line">    steps:</span><br><span class="line">      - uses: actions/checkout@v2</span><br><span class="line">      - name: Use Node.js 16.x</span><br><span class="line">        uses: actions/setup-node@v2</span><br><span class="line">        with:</span><br><span class="line">          node-version: <span class="string">&#x27;16&#x27;</span></span><br><span class="line">      - name: Cache NPM dependencies</span><br><span class="line">        uses: actions/cache@v2</span><br><span class="line">        with:</span><br><span class="line">          path: node_modules</span><br><span class="line">          key: <span class="variable">$&#123;&#123; runner.OS &#125;</span>&#125;-npm-cache</span><br><span class="line">          restore-keys: |</span><br><span class="line">            <span class="variable">$&#123;&#123; runner.OS &#125;</span>&#125;-npm-cache</span><br><span class="line">      - name: Install Dependencies</span><br><span class="line">        run: npm install</span><br><span class="line">      - name: Build</span><br><span class="line">        run: npm run build</span><br><span class="line">      - name: Deploy</span><br><span class="line">        uses: peaceiris/actions-gh-pages@v3</span><br><span class="line">        with:</span><br><span class="line">          github_token: <span class="variable">$&#123;&#123; secrets.GITHUB_TOKEN &#125;</span>&#125;</span><br><span class="line">          publish_dir: ./public</span><br></pre></td></tr></table></figure>
 
 <p>在仓库中前往 <strong>Settings</strong> &gt; <strong>Pages</strong> &gt; <strong>Source</strong>，将 branch 改为 <code>gh-pages</code>。</p>
