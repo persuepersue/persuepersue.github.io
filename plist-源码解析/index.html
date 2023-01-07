@@ -20,29 +20,34 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"ohlinux.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":false,"color":"#222","save":"manual"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="在 kernel 的开发调试过程中，经常需要知道 page 的某个 page flag 在哪条路径被 Set、被 Clear 了。甚至是在项目死机问题 debug 上，由于 page 不知道在哪里不合时宜地被 mlock 了，被 lock 住了，单纯地看代码可能比较难看出设置 page flag 的路径在哪，除非是对代码很熟悉，甚至需要对同事的代码比较熟悉，知道哪位同事之前有某个需求用了一种“奇怪">
+    <meta name="description" content="plist 是内核中一种带优先级的双向链表数据结构，链表中每个元素的优先级按数值大小升序排序。plist 作为 pi-futex 的一部分补丁引入内核，初始提交链接为：https:&#x2F;&#x2F;github.com&#x2F;torvalds&#x2F;linux&#x2F;commit&#x2F;77ba89c5cf28d5d98a3cae17f67a3e42b102cc25。本文基于 6.2-rc2 版本内核解析 plist 实现。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="利用 page_owner 跟踪 page flags">
-<meta property="og:url" content="https://ohlinux.com/%E5%88%A9%E7%94%A8-page-owner-%E8%B7%9F%E8%B8%AA-page-flags/index.html">
+<meta property="og:title" content="plist 源码解析">
+<meta property="og:url" content="https://ohlinux.com/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/index.html">
 <meta property="og:site_name" content="奇变偶不变">
-<meta property="og:description" content="在 kernel 的开发调试过程中，经常需要知道 page 的某个 page flag 在哪条路径被 Set、被 Clear 了。甚至是在项目死机问题 debug 上，由于 page 不知道在哪里不合时宜地被 mlock 了，被 lock 住了，单纯地看代码可能比较难看出设置 page flag 的路径在哪，除非是对代码很熟悉，甚至需要对同事的代码比较熟悉，知道哪位同事之前有某个需求用了一种“奇怪">
+<meta property="og:description" content="plist 是内核中一种带优先级的双向链表数据结构，链表中每个元素的优先级按数值大小升序排序。plist 作为 pi-futex 的一部分补丁引入内核，初始提交链接为：https:&#x2F;&#x2F;github.com&#x2F;torvalds&#x2F;linux&#x2F;commit&#x2F;77ba89c5cf28d5d98a3cae17f67a3e42b102cc25。本文基于 6.2-rc2 版本内核解析 plist 实现。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-10-27T15:23:43.000Z">
-<meta property="article:modified_time" content="2022-10-27T15:23:43.000Z">
+<meta property="og:image" content="https://ohlinux.com/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/head.png">
+<meta property="og:image" content="https://ohlinux.com/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/node1.png">
+<meta property="og:image" content="https://ohlinux.com/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/node2.png">
+<meta property="og:image" content="https://ohlinux.com/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/node3.png">
+<meta property="article:published_time" content="2023-01-04T16:44:25.000Z">
+<meta property="article:modified_time" content="2023-01-07T18:33:00.000Z">
 <meta property="article:author" content="qeandzc">
-<meta property="article:tag" content="kernel debug">
-<meta property="article:tag" content="page_owner">
+<meta property="article:tag" content="kernel">
+<meta property="article:tag" content="plist">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ohlinux.com/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/head.png">
 
 
-<link rel="canonical" href="https://ohlinux.com/%E5%88%A9%E7%94%A8-page-owner-%E8%B7%9F%E8%B8%AA-page-flags/">
+<link rel="canonical" href="https://ohlinux.com/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://ohlinux.com/%E5%88%A9%E7%94%A8-page-owner-%E8%B7%9F%E8%B8%AA-page-flags/","path":"利用-page-owner-跟踪-page-flags/","title":"利用 page_owner 跟踪 page flags"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://ohlinux.com/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/","path":"plist-源码解析/","title":"plist 源码解析"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>利用 page_owner 跟踪 page flags | 奇变偶不变</title>
+<title>plist 源码解析 | 奇变偶不变</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9JTD6JE3GJ"></script>
   <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-9JTD6JE3GJ","only_pageview":false}</script>
@@ -131,7 +136,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E4%BE%8B%E5%AD%90%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">0x00 例子：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%A6%82%E4%BD%95%E5%BC%80%E5%90%AF-page-owner"><span class="nav-number">2.</span> <span class="nav-text">0x01 如何开启 page_owner</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">基本结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API"><span class="nav-number">2.</span> <span class="nav-text">API</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,7 +192,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://ohlinux.com/%E5%88%A9%E7%94%A8-page-owner-%E8%B7%9F%E8%B8%AA-page-flags/">
+    <link itemprop="mainEntityOfPage" href="https://ohlinux.com/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -200,12 +205,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="利用 page_owner 跟踪 page flags | 奇变偶不变">
+      <meta itemprop="name" content="plist 源码解析 | 奇变偶不变">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          利用 page_owner 跟踪 page flags
+          plist 源码解析
         </h1>
 
         <div class="post-meta-container">
@@ -216,7 +221,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-10-27 23:23:43" itemprop="dateCreated datePublished" datetime="2022-10-27T23:23:43+08:00">2022-10-27</time>
+      <time title="创建时间：2023-01-05 00:44:25" itemprop="dateCreated datePublished" datetime="2023-01-05T00:44:25+08:00">2023-01-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-08 02:33:00" itemprop="dateModified" datetime="2023-01-08T02:33:00+08:00">2023-01-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -224,7 +236,11 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/kernel-debug/" itemprop="url" rel="index"><span itemprop="name">kernel debug</span></a>
+          <a href="/categories/kernel/" itemprop="url" rel="index"><span itemprop="name">kernel</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/kernel/util/" itemprop="url" rel="index"><span itemprop="name">util</span></a>
         </span>
     </span>
 
@@ -245,13 +261,32 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>在 kernel 的开发调试过程中，经常需要知道 page 的某个 page flag 在哪条路径被 Set、被 Clear 了。甚至是在项目死机问题 debug 上，由于 page 不知道在哪里<strong>不合时宜</strong>地被 mlock 了，被 lock 住了，单纯地看代码可能比较难看出设置 page flag 的路径在哪，除非是对代码很熟悉，甚至需要对同事的代码比较熟悉，知道哪位同事之前有某个需求用了一种“奇怪”的方式来实现，然后你可以灵光一闪想到这个死机问题没准和这个同事的修改有关。不过大部分情况我们是没有这个灵光一闪的，那就需要特别的 debug 手段了。page_owner 很适合这种场景。</p>
+        <p>plist 是内核中一种带优先级的双向链表数据结构，链表中每个元素的优先级按数值大小升序排序。plist 作为 pi-futex 的一部分补丁引入内核，初始提交链接为：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/torvalds/linux/commit/77ba89c5cf28d5d98a3cae17f67a3e42b102cc25">https://github.com/torvalds/linux/commit/77ba89c5cf28d5d98a3cae17f67a3e42b102cc25</a>。本文基于 6.2-rc2 版本内核解析 plist 实现。</p>
 <span id="more"></span>
 
-<h2 id="0x00-例子："><a href="#0x00-例子：" class="headerlink" title="0x00 例子："></a>0x00 例子：</h2><p>假设有个死机问题，通过初步分析发现是因为有个 page 带了 PG_mlocked 标志，正好遇到处理这个页面的内核路径不允许带有 PG_mlocked 标志的页面，所以就死机了。那到底为什么这个 page 会带有 PG_mlocked 标志呢？我们直接从代码层面翻来覆去地查看，<strong>都没有找到 PG_mlocked 从哪里来的</strong>。这个时候 page_owner 这个利器就派上用场了，我们在 <code>page-flags.h</code> 文件中重新实现了 SetPageMlocked 和 TestSetPageMlocked，在这两个函数实现中调用 <code>__set_page_owner</code> 函数，如 <code>__set_page_owner(page, 0, 0x1);</code>。因为在内核模块中可能会调用 SetPageMlocked 和 TestSetPageMlocked，所以还需要在 <code>mm/page_owner.c</code>中 <code>EXPORT_SYMBOL(__set_page_owner);</code>。并且在死机时 <code>dump_page(page, &quot;page set mlocker&quot;);</code>。这样在死机 dump 中就可以看到这个 page 被设置 PG_mlock 的路径了。</p>
-<p>当然，像 PG_lock 这种标志还要考虑在 trylock_page 中加 <code>__set_page_owner</code>。</p>
-<h2 id="0x01-如何开启-page-owner"><a href="#0x01-如何开启-page-owner" class="headerlink" title="0x01 如何开启 page_owner"></a>0x01 如何开启 page_owner</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CONFIG_PAGE_OWNER=y</span><br><span class="line"></span><br><span class="line">cmdline 中：</span><br><span class="line">page_owner=on stack_depot_disable=off</span><br></pre></td></tr></table></figure>
+<h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p>plist 是基于 kernel 中的双向链表 list 实现的，其有两个重要结构体：<code>struct plist_head</code> 和 <code>struct plist_node</code>，分别表示 plist 的 head 和普通结点，它们的具体内容如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">plist_head</span> &#123;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">node_list</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">plist_node</span> &#123;</span></span><br><span class="line">	<span class="type">int</span>			prio;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">prio_list</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">node_list</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> &#123;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">next</span>, *<span class="title">prev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
+<p><code>struct plist_head</code> 中只有一个 <code>struct list_head node_list;</code> 成员，其是 <code>struct plist_node</code> 中 <code>struct list_head node_list;</code> 的 head，这个链表包含了加入 plist 的所有结点。从 <code>struct plist_node</code> 结构体中看到还有另外一个会由 <code>struct list_head prio_list;</code> 构成的链表，这个链表可能没有包含全部的结点，因为相同优先级的结点只有第一个会加入 <code>prio_list</code> 中。这个链表用于加速找到要插入结点的正确位置，由于每个优先级只有一个结点会在链表上，所以这个链表的长度最长是优先级的范围。假设优先级范围为 K，在插入一个新元素时就会遍历 <code>prio_list</code> 链表来找到正确的位置，那么最多就只会遍历 K 个元素，这保证了插入元素算法的最坏复杂度为 <code>O(K)</code>。<code>prio</code> 成员自然就表示该结点的优先级了。</p>
+<p>下面来个实例看看 plist 中具体结构是怎么样的。</p>
+<ol>
+<li><p>通过类似 <code>PLIST_HEAD(example_head)</code> 定义并初始化一个 <code>struct plist_head example_head;</code> 结点，我们将得到以下结构：</p>
+<p> <img src="/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/head.png" alt="plist 初始化" title="plist 初始化"></p>
+<p> 上图中 <code>node_list</code> 表示 <code>struct plist_head</code> 结构体中的 <code>struct list_head node_list;</code> 成员，<code>prev</code> 和 <code>next</code> 表示 <code>node_list</code> 中的 <code>struct list_head *prev;</code> 和 <code>struct list_head *next;</code>。 </p>
+</li>
+<li><p>往 <code>example_head</code> 中加入一个优先级为 20 的结点 <code>struct plist_node node1;</code>：<br> <img src="/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/node1.png" alt="往 example_head 中加入一个优先级为 20 的结点"></p>
+</li>
+<li><p>往 <code>example_head</code> 中加入一个优先级为 19 的结点 <code>struct plist_node node2;</code>:<br> <img src="/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/node2.png" alt="往 example_head 中加入一个优先级为 19 的结点"></p>
+</li>
+<li><p>再次往 <code>example_head</code> 中加入一个优先级为 20 的结点 <code>struct plist_node node3;</code>:<br> <img src="/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/node3.png" alt="再次往 example_head 中加入一个优先级为 20 的结点"></p>
+</li>
+</ol>
+<h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><p>根据操作方法可以分为以下几种 API：</p>
+<ol>
+<li>初始化。</li>
+<li>增加删除。</li>
+<li>遍历。</li>
+</ol>
 
     </div>
 
@@ -267,22 +302,19 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/kernel-debug/" rel="tag"># kernel debug</a>
-              <a href="/tags/page-owner/" rel="tag"># page_owner</a>
+              <a href="/tags/kernel/" rel="tag"># kernel</a>
+              <a href="/tags/plist/" rel="tag"># plist</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2-6-11%E7%89%88%E6%9C%AC%E5%9F%BA%E6%95%B0%E6%A0%91%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="prev" title="2.6.11版本基数树源码解析">
-                  <i class="fa fa-chevron-left"></i> 2.6.11版本基数树源码解析
+                <a href="/KBASE-IOCTL-MEM-ALLOC-EX/" rel="prev" title="KBASE_IOCTL -- MEM_ALLOC_EX 解析">
+                  <i class="fa fa-chevron-left"></i> KBASE_IOCTL -- MEM_ALLOC_EX 解析
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/KBASE-IOCTL-MEM-ALLOC-EX/" rel="next" title="KBASE_IOCTL -- MEM_ALLOC_EX 解析">
-                  KBASE_IOCTL -- MEM_ALLOC_EX 解析 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

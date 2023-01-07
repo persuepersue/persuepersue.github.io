@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://ohlinux.com/plist-%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</loc>
+    <lastmod>2023-01-07</lastmod>
+  </url>
+  <url>
     <loc>https://ohlinux.com/KBASE-IOCTL-MEM-ALLOC-EX/</loc>
     <lastmod>2022-12-04</lastmod>
   </url>
