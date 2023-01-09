@@ -1,7 +1,7 @@
 ---
 title: plist 源码解析
 date: 2023-01-05 00:44:25
-updated: 2023-01-08 02:33
+updated: 2023-01-10 01:24
 tags:
 - kernel
 - plist
@@ -54,6 +54,74 @@ struct list_head {
 
 ## API
 根据操作方法可以分为以下几种 API：
-1. 初始化。
-2. 增加删除。
-3. 遍历。
+1. 初始化
+2. 增加删除
+3. 遍历
+
+### 初始化
+初始化有头结点初始化和普通结点初始化两种 API，这两种又分为静态初始化和动态初始化。
+#### 头结点初始化
+头结点静态初始化有两个 API: `PLIST_HEAD_INIT` 和 `PLIST_HEAD`，而 `PLIST_HEAD` 是通过 `PLIST_HEAD_INIT` 实现的。一般使用 `PLIST_HEAD` 初始化一个 `struct plist_head` 结构体：
+```c
+#define PLIST_HEAD_INIT(head)				\
+{							\
+	.node_list = LIST_HEAD_INIT((head).node_list)	\
+}
+
+#define PLIST_HEAD(head) \
+	struct plist_head head = PLIST_HEAD_INIT(head)
+```
+具体用法如 `mm/swapfile.c` 中 `static PLIST_HEAD(swap_active_head);`。当然也可借助 `PLIST_HEAD_INIT` 宏来完成 `plist_head` 的初始化了，如 `kernel/power/qos.c` 中这样使用：
+```c
+static struct pm_qos_constraints cpu_latency_constraints = {
+	.list = PLIST_HEAD_INIT(cpu_latency_constraints.list),
+	.target_value = PM_QOS_CPU_LATENCY_DEFAULT_VALUE,
+	.default_value = PM_QOS_CPU_LATENCY_DEFAULT_VALUE,
+	.no_constraint_value = PM_QOS_CPU_LATENCY_DEFAULT_VALUE,
+	.type = PM_QOS_MIN,
+};
+```
+头结点的动态初始化 API 为 `plist_head_init`：
+```c
+static inline void
+plist_head_init(struct plist_head *head)
+{
+	INIT_LIST_HEAD(&head->node_list);
+}
+```
+一般 `head` 不能或者不方便静态初始化时，譬如 `mm/swapfile.c` 中 `plist_head_init(&swap_avail_heads[nid]);`。
+
+### 普通结点初始化
+普通结点通过 `PLIST_NODE_INIT` 静态初始化：
+```c
+#define PLIST_NODE_INIT(node, __prio)			\
+{							\
+	.prio  = (__prio),				\
+	.prio_list = LIST_HEAD_INIT((node).prio_list),	\
+	.node_list = LIST_HEAD_INIT((node).node_list),	\
+}
+```
+如 `init/init_task.c` 中：
+```c
+struct task_struct init_task
+= {
+    ...;
+#ifdef CONFIG_SMP
+	.pushable_tasks	= PLIST_NODE_INIT(init_task.pushable_tasks, MAX_PRIO),
+#endif
+    ...;
+};
+```
+通过 `plist_node_init` 来动态初始化：
+```c
+static inline void plist_node_init(struct plist_node *node, int prio)
+{
+	node->prio = prio;
+	INIT_LIST_HEAD(&node->prio_list);
+	INIT_LIST_HEAD(&node->node_list);
+}
+```
+如 `mm/swapfile.c` 中 `plist_node_init(&p->avail_lists[i], 0);`。
+
+### 增加删除
+增加的 API 是 `plist_add` 函数，删除是 `plist_del` 函数。还有一个特殊的函数，相当于优化版本的先删除再加入：`plist_requeue`，这个函数的用途是譬如系统中有很多个 swapfile，可能有几个 swapfile 的优先级是相同的，那么我们希望可以轮询使用相同优先级的 swapfile，具体操作就是遍历这个 swapfile 时，调用 `plist_requeue` 函数将当前 swapfile 置于相同优先级的最后一个，这样就可以达到轮询相同优先级的效果了。
